@@ -1,13 +1,95 @@
-import { calculateBMR, calculateTDEE, calculateMacros } from '../utils/Calculations'
+import { useState } from "react";
+import { calculateTDEE, calculateBMR, calculateMacros } from "../utils/Calculations";
 
+function UserDetails() {
+  const [weight, setWeight] = useState("80");
+  const [height, setHeight] = useState("180");
+  const [age, setAge] = useState("25");
+  const [sex, setSex] = useState("male");
+  const [activityLevel, setActivityLevel] = useState("sedentary");
+  const [goal, setGoal] = useState("maintain");
+  const bmr = calculateBMR(Number(weight), Number(height), Number(age), sex)
+  const tdee = calculateTDEE(bmr, activityLevel)
+  const macros = calculateMacros(Number(tdee), Number(weight), goal)
 
-const bmr = calculateBMR(80, 180, 25, 'male')
+  return (
+    <>
+      <h1>Omat tiedot</h1>
+      <div>
+        <label htmlFor="weight">Paino (kg)</label>
+        <input
+          type="number"
+          id="weight"
+          value={weight}
+          onChange={(event) => setWeight(event.target.value)}
+        />
+      </div>
+      <div>
+        <label htmlFor="height">Pituus (cm)</label>
+        <input
+          type="number"
+          id="height"
+          value={height}
+          onChange={(event) => setHeight(event.target.value)}
+        />
+      </div>
 
-const tdee = (bmr, calculateTDEE(bmr, 'moderate'))
-console.log(calculateMacros(tdee, 80, 'maintain'))
+      <div>
+        <label htmlFor="age">Ikä</label>
+        <input
+          type="number"
+          id="age"
+          value={age}
+          onChange={(event) => setAge(event.target.value)}
+        />
+      </div>
 
-function UserDetails(){
-    return <h1>Käyttäjätiedot</h1>
+      <div>
+        <label htmlFor="sex">Sukupuoli</label>
+        <select
+          id="sex"
+          value={sex}
+          onChange={(event) => setSex(event.target.value)}
+        >
+          <option value="male">Mies</option>
+          <option value="female">Nainen</option>
+        </select>
+      </div>
+
+      <div>
+        <label htmlFor="goal">Tavoite</label>
+        <select
+          id="goal"
+          value={goal}
+          onChange={(event) => setGoal(event.target.value)}
+        >
+          <option value="lose">Pudottaa painoa</option>
+          <option value="maintain">Ylläpitää painoa</option>
+          <option value="gain">Lisätä painoa</option>
+        </select>
+      </div>
+
+      <div>
+        <label htmlFor="activityLevel">Aktiivisuustaso (krt/vko)</label>
+
+        <select
+          id="activityLevel"
+          value={activityLevel}
+          onChange={(event) => setActivityLevel(event.target.value)}
+        >
+          <option value="sedentary">Ei liikuntaa</option>
+          <option value="light">Liikuntaa 1-2 kertaa viikossa</option>
+          <option value="moderate">Liikuntaa 3-5 kertaa viikossa</option>
+          <option value="active">Liikuntaa 6-7 kertaa viikossa</option>
+          <option value="veryActive">Liikuntaa 8+ kertaa viikossa</option>
+        </select>
+      </div>
+
+      <p>Perusaineenvaihdunta: {bmr} kcal </p>
+      <p>Kulutus: {tdee} kcal </p>
+      <p>Kaloritavoite: {macros.calories}, proteiini: {macros.protein}, rasva: {macros.fats}, Hiilihydraatit{macros.carbs}</p>
+    </>
+  );
 }
 
-export default UserDetails
+export default UserDetails;
