@@ -24,3 +24,19 @@ export function calculateTDEE(bmr, activityLevel){
     const tdee = bmr * factor;
     return Math.round(tdee);
 }
+
+export const CALORIE_GOALS = {
+    lose : -500,
+    maintain : 0,
+    gain: 500,
+}
+
+export function calculateMacros(tdee, weight, goal){
+    const calories = tdee + CALORIE_GOALS[goal];
+    const protein = weight * 2;
+    const fats = weight;
+    const carbs = (calories - (protein * 4 + fats * 9))/4;
+
+    return{calories: calories, protein: protein, fats: fats, carbs: Math.round(carbs)}
+
+}
