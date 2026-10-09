@@ -1,13 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { calculateTDEE, calculateBMR, calculateMacros } from "../utils/Calculations";
+import { saveProfile, loadProfile } from "../utils/storage";
+
+const DEFAULT_PROFILE ={
+    sex: "male",
+    weight: "80",
+    height: "180",
+    age: "30",
+    activityLevel: "active",
+    goal: "maintain",
+
+}
 
 function UserDetails() {
-  const [weight, setWeight] = useState("80");
-  const [height, setHeight] = useState("180");
-  const [age, setAge] = useState("25");
-  const [sex, setSex] = useState("male");
-  const [activityLevel, setActivityLevel] = useState("sedentary");
-  const [goal, setGoal] = useState("maintain");
+  const initial = {...DEFAULT_PROFILE, ...loadProfile()}
+  const [weight, setWeight] = useState(initial.weight);
+  const [height, setHeight] = useState(initial.height);
+  const [age, setAge] = useState(initial.age);
+  const [sex, setSex] = useState(initial.sex);
+  const [activityLevel, setActivityLevel] = useState(initial.activityLevel);
+  const [goal, setGoal] = useState(initial.goal);
+
+  useEffect(() => {
+    saveProfile({weight, height, age, sex, activityLevel, goal});
+  }, [weight, height, age, sex, activityLevel, goal]);
+     
   const bmr = calculateBMR(Number(weight), Number(height), Number(age), sex)
   const tdee = calculateTDEE(bmr, activityLevel)
   const macros = calculateMacros(Number(tdee), Number(weight), goal)
