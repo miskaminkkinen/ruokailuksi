@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import { calculateTDEE, calculateBMR, calculateMacros } from "../utils/Calculations";
 import { saveProfile, loadProfile } from "../utils/storage";
-import { calculateRecipeMacros } from "../utils/Calculations";
+import { fetchProduct } from "../utils/api";
+import { searchProducts } from "../utils/api";
 
-console.log(calculateRecipeMacros([
-  { product: { kcal: 539, protein: 6.3, carbs: 57.5, fats: 30.9 }, grams: 50 },
-  { product: { kcal: 370, protein: 13, carbs: 60, fats: 7 }, grams: 80 },
-]));
+
+
 
 
 
