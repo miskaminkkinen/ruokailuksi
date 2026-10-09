@@ -40,3 +40,24 @@ export function calculateMacros(tdee, weight, goal){
     return{calories: calories, protein: protein, fats: fats, carbs: Math.round(carbs)}
 
 }
+
+export function calculateRecipeMacros(ingredients){
+    let calories = 0;
+    let protein = 0;
+    let fats = 0;
+    let carbs = 0;
+
+    for(const ingredient of ingredients){
+        const factor = ingredient.grams / 100;
+        calories += ingredient.product.kcal * factor;
+        carbs += ingredient.product.carbs * factor;
+        protein += ingredient.product.protein * factor;
+        fats += ingredient.product.fats * factor;
+    }
+    return{
+        calories: Math.round(calories),
+        protein: Math.round(protein),
+        fats: Math.round(fats),
+        carbs: Math.round(carbs),
+    }
+}
