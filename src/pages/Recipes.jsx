@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { fetchProduct } from "../utils/api";
+import {searchProduct, fetchProduct} from "../utils/api.js";
+
 
 
 function Recipes(){
@@ -13,8 +14,8 @@ function Recipes(){
     setError(null); 
 
     try {
-        const products = await fetchProduct(query);
-        setResults([products]);
+        const products = await searchProduct(query);
+        setResults(products);
     } catch(error){
         setError("Tuotetta ei löydy!")
     } finally {
@@ -25,7 +26,7 @@ function Recipes(){
     return(
     <div>
         <h1>Reseptit </h1>
-        <label htmlFor = "query">Viivakoodi</label>
+        <label htmlFor = "query">Hae tuotetta</label>
         <input 
         id = "query"
         type = "text"
@@ -40,7 +41,7 @@ function Recipes(){
         <ul>
             {results.map((product) => (
                 <li key = {product.barcode}>
-                    {product.name}: {product.kcal} kcal: {product.carbs}Hiilihydaatit / 100g {product.protein}: Proteiini / 100g {product.fats}: Rasva / 100g
+                    {product.brand && `${product.brand}: `}{product.name}: {product.kcal} kcal: {product.carbs}Hiilihydaatit / 100g {product.protein}: Proteiini / 100g {product.fats}: Rasva / 100g
                 </li>
 
             ))}
