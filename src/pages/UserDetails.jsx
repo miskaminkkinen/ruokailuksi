@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { calculateTDEE, calculateBMR, calculateMacros } from "../utils/Calculations";
 import { saveProfile, loadProfile } from "../utils/storage";
-import { fetchProduct } from "../utils/api";
-import { searchProducts } from "../utils/api";
+
 
 
 

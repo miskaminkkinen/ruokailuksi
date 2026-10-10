@@ -23,7 +23,7 @@ export async function fetchProduct(barcode){
     }
 }
 
-export async function searchProducts(query){
+export async function searchProduct(query){
     const url = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=10&fields=code,product_name,brands,nutriments`;
 
     const response = await fetch(url);
@@ -41,7 +41,8 @@ export async function searchProducts(query){
             kcal: n["energy-kcal_100g"],
             protein: n.proteins_100g,
             carbs: n.carbohydrates_100g,
-            fats: n.fat_100g
+            fats: n.fat_100g,
+            brand: p.brand
         }
     })
 
