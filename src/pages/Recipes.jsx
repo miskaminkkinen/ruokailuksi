@@ -31,9 +31,24 @@ function Recipes(){
 }
 
     function handleAdd(){
+        const alreadyAdded = ingredients.some((ingredient) => ingredient.product.barcode === selected.barcode );
+
+        if(alreadyAdded){
+          setError("Tuote on jo reseptissä")
+          setSelected(null)
+          return;
+        }
+
         setIngredients([...ingredients, {product: selected, grams: Number(grams)}]);
-        setSelected(null);
-        setGrams("100")
+          setSelected(null);
+          setGrams("100")
+          setError(null)
+        
+
+        
+    }
+    function handleRemove(barcode){
+        setIngredients(ingredients.filter((ingredient) => ingredient.product.barcode !== barcode ));
     }
 
 
@@ -69,7 +84,8 @@ function Recipes(){
 
             {ingredients.map((ingredient) =>(
                 <li key = {ingredient.product.barcode}>
-                    {ingredient.product.brand}: {ingredient.product.name}: {ingredient.grams}
+                    {ingredient.product.brand}: {ingredient.product.name}: {ingredient.grams} 
+                    <Button variant = "outline-danger" size = "sm" onClick={() => handleRemove(ingredient.product.barcode)}>Poista</Button>
                 </li>
             ))}
             
