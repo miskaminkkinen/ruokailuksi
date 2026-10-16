@@ -2,6 +2,7 @@ import { useState } from "react";
 import {searchProduct, fetchProduct} from "../utils/api.js";
 import { calculateRecipeMacros } from "../utils/Calculations.js";
 import { Modal, Button } from "react-bootstrap";
+import { saveRecipe, loadRecipe } from "../utils/storage.js";
 
 
 
@@ -10,9 +11,11 @@ function Recipes(){
     const[query, setQuery] = useState('');
     const[results, setResults] = useState([]);
     const[error, setError] = useState(null);
-    const[ingredients, setIngredients] = useState([])
-    const[selected, setSelected] = useState(null)
-    const[grams, setGrams] = useState("100")
+    const[ingredients, setIngredients] = useState([]);
+    const[selected, setSelected] = useState(null);
+    const[grams, setGrams] = useState("100");
+    const[recipeName, setRecipeName] = useState("");
+    const[recipes, setRecipes] = useState(loadRecipe());
 
 
     async function handleSearch(){
@@ -51,9 +54,26 @@ function Recipes(){
         setIngredients(ingredients.filter((ingredient) => ingredient.product.barcode !== barcode ));
     }
 
+    function handleSaveRecipe() {
+        if(recipeName.trim() === "" || ingredients.length === 0 ){
+            setError("Anna reseptille nimi ja lisää ainakin yksi aines")
+            return;
+        }
 
-   
+        const newRecipe = {
+            id: Date.now(),
+            name: recipeName,
+            ingredients: ingredients,
+            macros: recipeMacros,
+        };
 
+        const updated = [...recipes, newRecipe];
+        setRecipes(updated);
+        saveRecipe(updated);
+
+        setRecipeName("")
+        setIngredients([])
+    }
    const recipeMacros = calculateRecipeMacros(ingredients);
     return(
     <div>
@@ -95,6 +115,18 @@ function Recipes(){
         <p>Proteiini: {recipeMacros.protein} </p>
         <p>Hiilihydraatit: {recipeMacros.carbs} </p>
         <p>Rasva: {recipeMacros.fats}</p>
+
+        <label htmlFor="recipeName">Reseptin nimi</label>
+        <input 
+        id = "recipeName"
+        type = "text"
+        value = {recipeName}
+        onChange={(event) => setRecipeName(event.target.value)}
+        />
+
+        <Button onClick={handleSaveRecipe}>Tallenna</Button>
+
+
 
 
     <Modal show={selected !== null} onHide={() => setSelected(null)}>
