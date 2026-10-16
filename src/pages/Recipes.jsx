@@ -18,14 +18,14 @@ function Recipes(){
     const[recipes, setRecipes] = useState(loadRecipe());
 
 
-    async function handleSearch(){
+    async function handleSearch(code){
     setLoading(true);
     setError(null); 
     
 
     try {
-        const products = await searchProduct(query);
-        setResults(products);
+        const product = await fetchProduct(code.trim());
+        setResults([product]);
     } catch(error){
         setError("Tuotetta ei löydy!")
     } finally {
@@ -78,7 +78,7 @@ function Recipes(){
     return(
     <div>
         <h1>Reseptit </h1>
-        <label htmlFor = "query">Hae tuotetta</label>
+        <label htmlFor = "query">Viivakoodi(löytyy pakkauksesta)</label>
         <input 
         id = "query"
         type = "text"
@@ -86,7 +86,7 @@ function Recipes(){
         onChange={(event) => setQuery(event.target.value)}
         />
 
-        <button onClick = {handleSearch} disabled = {loading}>Hae</button>    
+        <button disabled = {loading} onClick={() => handleSearch(query)}>Hae viivakoodilla</button>    
         {loading && <p>Ladataan...</p>}   
         {error && <p>{error}</p>}
 
