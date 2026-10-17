@@ -34,11 +34,16 @@ function UserDetails() {
   const macros = calculateMacros(Number(tdee), Number(weight), goal);
 
   return (
-    
+    <>
+      <h1>TDEE-Laskuri</h1>
+      <p className="lead text-muted mb-4">
+        Syötä tietosi, niin sovellus laskee päivittäisen energiantarpeesi ja
+        makrotavoitteesi. 
+      </p>
 
       <Row>
         <Col md={6}>
-          <Card className="mb-4 shadow" >
+          <Card className="mb-4 shadow">
             <Card.Body>
               <Card.Title>Omat tiedot</Card.Title>
               <Form onSubmit={(event) => event.preventDefault()}>
@@ -80,7 +85,7 @@ function UserDetails() {
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="activityLevel">
-                  <Form.Label >Aktiivisuus</Form.Label>
+                  <Form.Label>Aktiivisuus</Form.Label>
                   <Form.Select
                     value={activityLevel}
                     onChange={(event) => setActivityLevel(event.target.value)}
@@ -115,11 +120,11 @@ function UserDetails() {
           </Card>
         </Col>
 
-        <Col md = {6}>
+        <Col md={6}>
           <Card>
             <Card.Body>
               <Card.Title>Päivittäinen tarve</Card.Title>
-              <ListGroup variant = "flush">
+              <ListGroup variant="flush">
                 <ListGroup.Item className="d-flex-justify-content-between">
                   <span>Perusaineenvaihdunta: </span>
                   <strong>{bmr} kcal</strong>
@@ -129,14 +134,24 @@ function UserDetails() {
                   <strong>{tdee} kcal</strong>
                 </ListGroup.Item>
                 <ListGroup.Item className="d-flex-justify-content-between">
-                  <MacroSummary macros = {macros} caloriesLabel="Tavoitekalorit"/>
+                  <MacroSummary
+                    macros={macros}
+                    caloriesLabel="Tavoitekalorit"
+                  />
                 </ListGroup.Item>
               </ListGroup>
             </Card.Body>
+            <Card.Footer className="small text-muted">
+              Luvut ovat suuntaa-antavia arvioita, eivät ravitsemusterapeutin
+              suosituksia. Perusaineenvaihdunta lasketaan Mifflin–St Jeor
+              -kaavalla ja kokonaiskulutus aktiivisuuskertoimella. Proteiini 2
+              g/kg, rasva 1 g/kg, loput hiilihydraatteina. Laihdutus- ja
+              lisäystavoite ±500 kcal
+            </Card.Footer>
           </Card>
         </Col>
       </Row>
-    
+    </>
   );
 }
 

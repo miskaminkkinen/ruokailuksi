@@ -11,7 +11,8 @@ function SavedRecipes(){
 
     return(
         <>
-        <h1 className="mb-4">Omat reseptit</h1>
+        <h1>Tallennetut reseptit</h1>
+        <p className="lead text-muted mb-4">Tallentamasi reseptit ravintoarvoineen.</p>
         {recipes.length === 0 && <p className="text-muted">Ei tallennettuja reseptejä</p>}
         <Row>
             {recipes.map((recipe) => (

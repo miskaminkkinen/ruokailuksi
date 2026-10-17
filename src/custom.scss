@@ -1,15 +1,18 @@
-$primary: #606a77;  
-$navbar-dark-color: rgba(255, 255, 255, 0.9);   // linkit lähes valkoisiksi
-$navbar-dark-hover-color: #fff;                 // hiiren alla täysin valkoinen
+$primary: #e85d04;  
+$dark: #1b1b1e;
+$navbar-dark-color: rgba(255, 255, 255, 0.9);   
+$navbar-dark-hover-color: #fff;                 
 $navbar-dark-active-color: #fff;      
-$font-family-base: "Work sans", sans-serif;          // aktiivinen sivu valkoinen
+$font-family-base: "Work sans", sans-serif;   
+$headings-font-weight: 700;
+$headings-color: #e85d04;  
 
 
 
 @import "bootstrap/scss/bootstrap";
 
 body{
-    background-color: #888888;
+    background-color: #f7f5f2;
 }
 
 .navbar .nav-link.active {

@@ -87,6 +87,8 @@ function Recipes() {
   const recipeMacros = calculateRecipeMacros(ingredients);
   return (
     <>
+    <h1>Luo reseptejä</h1>
+    <p className="lead text-muted mb-4">Hae tuotteita viivakoodilla, lisää ne reseptiin ja tallenna.</p>
  <Row>
     <Col md={7}>
       <Card className="mb-4 shadow">
