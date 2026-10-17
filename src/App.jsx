@@ -14,7 +14,7 @@ function App() {
       <Nav className='gap-4 ms-auto-gap-4'>
         <Nav.Link as = {NavLink} to = "/" end> Reseptit </Nav.Link>
         <Nav.Link as = {NavLink} to = "/reseptit"> Luo reseptejä </Nav.Link>
-        <Nav.Link as = {NavLink} to = "/tiedot"> Omat tiedot </Nav.Link>
+        <Nav.Link as = {NavLink} to = "/tiedot"> TDEE Laskuri </Nav.Link>
       </Nav>
     </Container>
   </Navbar>
