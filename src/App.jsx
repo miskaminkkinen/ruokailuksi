@@ -9,7 +9,7 @@ import SavedRecipes from './pages/SavedRecipes'
 function App() {
   return(
   <>
-  <Navbar bg = "primary" data-bs-theme = "dark">
+  <Navbar bg = "primary" data-bs-theme = "dark" expand = "md">
     <Container>
       <Navbar.Brand as={Link} to="/" className="fw-bold d-flex align-items-center">
       <img
@@ -19,11 +19,16 @@ function App() {
        className='me-2'
        />
       Ruokailuksi</Navbar.Brand>
+
+      <Navbar.Toggle aria-controls="main-nav" />
+
+      <Navbar.Collapse id = "main-nav" >
       <Nav className='gap-4 ms-auto-gap-4'>
         <Nav.Link as = {NavLink} to = "/" end> Reseptit </Nav.Link>
         <Nav.Link as = {NavLink} to = "/reseptit"> Luo reseptejä </Nav.Link>
         <Nav.Link as = {NavLink} to = "/tdee"> TDEE Laskuri </Nav.Link>
       </Nav>
+      </Navbar.Collapse>
     </Container>
   </Navbar>
 
