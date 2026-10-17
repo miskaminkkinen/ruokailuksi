@@ -86,26 +86,30 @@ function Recipes() {
   }
   const recipeMacros = calculateRecipeMacros(ingredients);
   return (
-    <div>
-      <h1>Reseptit </h1>
-      <Form.Label htmlFor="query">Viivakoodi(löytyy pakkauksesta)</Form.Label>
-      <InputGroup className="mb-3">
-        <Form.Control
-          inputMode = "numeric"
-          id="query"
-          placeholder="esim. 3017620422003"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-        />
-        <button disabled={loading} onClick={() => handleSearch(query)}>
-          Hae viivakoodilla
-        </button>
-      </InputGroup>
+    <>
+ <Row>
+    <Col md={7}>
+      <Card className="mb-4 shadow">
+        <Card.Body>
+          <Card.Title>Hae tuotteita</Card.Title>
+          <Form.Label htmlFor="query">Viivakoodi(löytyy pakkauksesta)</Form.Label>
+          <InputGroup className="mb-3">
+          <Form.Control
+            inputMode = "numeric"
+            id="query"
+            placeholder="esim. 3017620422003"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+          />
+        <Button disabled={loading} onClick={() => handleSearch(query)}>
+          Hae 
+        </Button>
+        </InputGroup>
 
-      {loading && <p>Ladataan...</p>}
-      {error && <p>{error}</p>}
+        {loading && <p>Ladataan...</p>}
+        {error && <p>{error}</p>}
 
-      <ListGroup classname = "mb-4">
+        <ListGroup classname = "mb-4">
         {results.map((product) => (
           <ListGroup.Item 
           key={product.barcode}
@@ -125,12 +129,18 @@ function Recipes() {
   
         </ListGroup.Item>
         ))}
-        </ListGroup>
-
-
-        <ListGroup classname = "mb-4">
+        </ListGroup>         
+        </Card.Body>
+      </Card>
+    </Col>
+    <Col md={5}>
+      <Card className="mb-4 shadow">
+        <Card.Body>
+          <Card.Title>Oma resepti</Card.Title>
+          <ListGroup classname = "mb-4">
             {ingredients.length === 0 && <p className="text-muted">Lisää aineksia hakemalla viivakoodilla.</p>}
         {ingredients.map((ingredient) => (
+
           <ListGroup.Item 
           key={ingredient.product.barcode}
           className="d-flex justify-content-between align-items-center"
@@ -148,23 +158,30 @@ function Recipes() {
   
         </ListGroup.Item>
         ))}
+        <MacroSummary macros = {recipeMacros} caloriesLabel="Kokonaiskalorit"/>
+
+        <Form.Group className="mt-3 mb-3" controlId="recipeName">
+        <Form.Label>Reseptin nimi</Form.Label>
+          <Form.Control
+          value={recipeName}
+          onChange={(event) => setRecipeName(event.target.value)}
+          placeholder="esim. Kanarisotto"
+          />
+        </Form.Group>
+
+        <Button className="w-100" onClick={handleSaveRecipe}>
+        Tallenna resepti
+        </Button>
         </ListGroup>
 
 
+        
+          
+        </Card.Body>
+      </Card>
+    </Col>
+  </Row>
 
-
-
-      <MacroSummary macros={recipeMacros} />
-
-      <label htmlFor="recipeName">Reseptin nimi</label>
-      <input
-        id="recipeName"
-        type="text"
-        value={recipeName}
-        onChange={(event) => setRecipeName(event.target.value)}
-      />
-
-      <Button onClick={handleSaveRecipe}>Tallenna</Button>
 
       <Modal show={selected !== null} onHide={() => setSelected(null)}>
         <Modal.Header closeButton>
@@ -186,8 +203,8 @@ function Recipes() {
           <Button onClick={handleAdd}>Lisää Reseptiin</Button>
         </Modal.Footer>
       </Modal>
-    </div>
-  );
-}
+</>
+  
+    )}
 
 export default Recipes;

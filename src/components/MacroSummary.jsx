@@ -1,10 +1,10 @@
 import { ListGroup } from "react-bootstrap";
 
- function MacroSummary({macros}){
+ function MacroSummary({macros, caloriesLabel = "Kalorit"}){
     return(
     <ListGroup variant = "flush">               
                 <ListGroup.Item className="d-flex-justify-content-between">
-                  <span>Tavoitekalorit: </span>
+                  <span>{caloriesLabel}: </span>
                   <strong>{macros.calories} kcal</strong>
                 </ListGroup.Item>
                 <ListGroup.Item className="d-flex-justify-content-between">

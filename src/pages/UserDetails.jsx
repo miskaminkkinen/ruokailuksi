@@ -129,7 +129,7 @@ function UserDetails() {
                   <strong>{tdee} kcal</strong>
                 </ListGroup.Item>
                 <ListGroup.Item className="d-flex-justify-content-between">
-                  <MacroSummary macros = {macros}/>
+                  <MacroSummary macros = {macros} caloriesLabel="Tavoitekalorit"/>
                 </ListGroup.Item>
               </ListGroup>
             </Card.Body>
