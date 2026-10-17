@@ -16,7 +16,7 @@ const DEFAULT_PROFILE = {
   goal: "maintain",
 };
 
-function UserDetails() {
+function TdeeCalc() {
   const initial = { ...DEFAULT_PROFILE, ...loadProfile() };
   const [weight, setWeight] = useState(initial.weight);
   const [height, setHeight] = useState(initial.height);
@@ -155,4 +155,4 @@ function UserDetails() {
   );
 }
 
-export default UserDetails;
+export default TdeeCalc;

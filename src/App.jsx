@@ -2,7 +2,7 @@
 import {Routes, Route, NavLink, Link } from 'react-router-dom'
 import {Container, Nav, Navbar} from 'react-bootstrap'
 import Recipes from './pages/Recipes'
-import UserDetails from './pages/UserDetails'
+import TdeeCalc from './pages/TdeeCalc'
 import SavedRecipes from './pages/SavedRecipes'
 
 
@@ -22,7 +22,7 @@ function App() {
       <Nav className='gap-4 ms-auto-gap-4'>
         <Nav.Link as = {NavLink} to = "/" end> Reseptit </Nav.Link>
         <Nav.Link as = {NavLink} to = "/reseptit"> Luo reseptejä </Nav.Link>
-        <Nav.Link as = {NavLink} to = "/tiedot"> TDEE Laskuri </Nav.Link>
+        <Nav.Link as = {NavLink} to = "/tdee"> TDEE Laskuri </Nav.Link>
       </Nav>
     </Container>
   </Navbar>
@@ -31,7 +31,7 @@ function App() {
     <Routes>
       <Route path="/" element = {<SavedRecipes />} />
       <Route path="/reseptit" element = {<Recipes />} />
-      <Route path="/tiedot" element = {<UserDetails />} />
+      <Route path="/tdee" element = {<TdeeCalc />} />
     </Routes>
   </Container>
 
