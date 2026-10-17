@@ -123,9 +123,9 @@ function Recipes() {
                 {product.kcal} kcal | P {product.protein}| H {product.carbs}| R {product.fats} / 100g
             </small>
             </div>
-            <button size = "sm" onClick={() => setSelected(product)}>
+            <Button size = "sm" onClick={() => setSelected(product)}>
               Lisää Reseptiin
-            </button>
+            </Button>
   
         </ListGroup.Item>
         ))}
