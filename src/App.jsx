@@ -34,6 +34,10 @@ function App() {
       <Route path="/tiedot" element = {<UserDetails />} />
     </Routes>
   </Container>
+
+<footer className="text-center text-muted small py-4">
+  Ravintotiedot: <a href="https://world.openfoodfacts.org" target="_blank" rel="noreferrer">Open Food Facts</a> (ODbL)
+</footer>
   </>
   )
 }
