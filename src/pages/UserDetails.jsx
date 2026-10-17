@@ -6,7 +6,7 @@ import {
 } from "../utils/Calculations";
 import { saveProfile, loadProfile } from "../utils/storage";
 import { Form, Card, Row, Col, ListGroup } from "react-bootstrap";
-
+import MacroSummary from "../components/MacroSummary";
 const DEFAULT_PROFILE = {
   sex: "male",
   weight: "80",
@@ -80,7 +80,7 @@ function UserDetails() {
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="activityLevel">
-                  <Form.Label htmlFor="activityLevel">Aktiivisuus</Form.Label>
+                  <Form.Label >Aktiivisuus</Form.Label>
                   <Form.Select
                     value={activityLevel}
                     onChange={(event) => setActivityLevel(event.target.value)}
@@ -129,20 +129,7 @@ function UserDetails() {
                   <strong>{tdee} kcal</strong>
                 </ListGroup.Item>
                 <ListGroup.Item className="d-flex-justify-content-between">
-                  <span>Tavoitekalorit: </span>
-                  <strong>{macros.calories} kcal</strong>
-                </ListGroup.Item>
-                <ListGroup.Item className="d-flex-justify-content-between">
-                  <span>Proteiini: </span>
-                  <strong>{macros.protein}</strong>
-                </ListGroup.Item>
-                <ListGroup.Item className="d-flex-justify-content-between">
-                  <span>Rasva: </span>
-                  <strong>{macros.fats}</strong>
-                </ListGroup.Item>
-                <ListGroup.Item className="d-flex-justify-content-between">
-                  <span>Hiilihydraatit: </span>
-                  <strong>{macros.carbs}</strong>
+                  <MacroSummary macros = {macros}/>
                 </ListGroup.Item>
               </ListGroup>
             </Card.Body>
