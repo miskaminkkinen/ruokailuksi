@@ -1,25 +1,23 @@
 import { useState, useEffect } from "react";
-import { calculateTDEE, calculateBMR, calculateMacros } from "../utils/Calculations";
+import {
+  calculateTDEE,
+  calculateBMR,
+  calculateMacros,
+} from "../utils/Calculations";
 import { saveProfile, loadProfile } from "../utils/storage";
+import { Form, Card, Row, Col, ListGroup } from "react-bootstrap";
 
-
-
-
-
-
-
-const DEFAULT_PROFILE ={
-    sex: "male",
-    weight: "80",
-    height: "180",
-    age: "30",
-    activityLevel: "active",
-    goal: "maintain",
-
-}
+const DEFAULT_PROFILE = {
+  sex: "male",
+  weight: "80",
+  height: "180",
+  age: "30",
+  activityLevel: "active",
+  goal: "maintain",
+};
 
 function UserDetails() {
-  const initial = {...DEFAULT_PROFILE, ...loadProfile()}
+  const initial = { ...DEFAULT_PROFILE, ...loadProfile() };
   const [weight, setWeight] = useState(initial.weight);
   const [height, setHeight] = useState(initial.height);
   const [age, setAge] = useState(initial.age);
@@ -28,90 +26,130 @@ function UserDetails() {
   const [goal, setGoal] = useState(initial.goal);
 
   useEffect(() => {
-    saveProfile({weight, height, age, sex, activityLevel, goal});
+    saveProfile({ weight, height, age, sex, activityLevel, goal });
   }, [weight, height, age, sex, activityLevel, goal]);
-     
-  const bmr = calculateBMR(Number(weight), Number(height), Number(age), sex)
-  const tdee = calculateTDEE(bmr, activityLevel)
-  const macros = calculateMacros(Number(tdee), Number(weight), goal)
+
+  const bmr = calculateBMR(Number(weight), Number(height), Number(age), sex);
+  const tdee = calculateTDEE(bmr, activityLevel);
+  const macros = calculateMacros(Number(tdee), Number(weight), goal);
 
   return (
-    <>
-      <h1>Omat tiedot</h1>
-      <div>
-        <label htmlFor="weight">Paino (kg)</label>
-        <input
-          type="number"
-          id="weight"
-          value={weight}
-          onChange={(event) => setWeight(event.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor="height">Pituus (cm)</label>
-        <input
-          type="number"
-          id="height"
-          value={height}
-          onChange={(event) => setHeight(event.target.value)}
-        />
-      </div>
+    
 
-      <div>
-        <label htmlFor="age">Ikä</label>
-        <input
-          type="number"
-          id="age"
-          value={age}
-          onChange={(event) => setAge(event.target.value)}
-        />
-      </div>
+      <Row>
+        <Col md={6}>
+          <Card className="mb-4 shadow" >
+            <Card.Body>
+              <Card.Title>Omat tiedot</Card.Title>
+              <Form onSubmit={(event) => event.preventDefault()}>
+                <Form.Group className="mb-3" controlId="weight">
+                  <Form.Label>Paino (kg)</Form.Label>
+                  <Form.Control
+                    type="number"
+                    value={weight}
+                    onChange={(event) => setWeight(event.target.value)}
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="height">
+                  <Form.Label>Pituus (cm)</Form.Label>
+                  <Form.Control
+                    type="number"
+                    value={height}
+                    onChange={(event) => setHeight(event.target.value)}
+                  />
+                </Form.Group>
 
-      <div>
-        <label htmlFor="sex">Sukupuoli</label>
-        <select
-          id="sex"
-          value={sex}
-          onChange={(event) => setSex(event.target.value)}
-        >
-          <option value="male">Mies</option>
-          <option value="female">Nainen</option>
-        </select>
-      </div>
+                <Form.Group className="mb-3" controlId="age">
+                  <Form.Label>Ikä </Form.Label>
+                  <Form.Control
+                    type="number"
+                    value={age}
+                    onChange={(event) => setAge(event.target.value)}
+                  />
+                </Form.Group>
 
-      <div>
-        <label htmlFor="goal">Tavoite</label>
-        <select
-          id="goal"
-          value={goal}
-          onChange={(event) => setGoal(event.target.value)}
-        >
-          <option value="lose">Pudottaa painoa</option>
-          <option value="maintain">Ylläpitää painoa</option>
-          <option value="gain">Lisätä painoa</option>
-        </select>
-      </div>
+                <Form.Group className="mb-3" controlId="sex">
+                  <Form.Label>Sukupuoli</Form.Label>
+                  <Form.Select
+                    value={sex}
+                    onChange={(event) => setSex(event.target.value)}
+                  >
+                    <option value="male">Mies</option>
+                    <option value="female">Nainen</option>
+                  </Form.Select>
+                </Form.Group>
 
-      <div>
-        <label htmlFor="activityLevel">Aktiivisuustaso (krt/vko)</label>
+                <Form.Group className="mb-3" controlId="activityLevel">
+                  <Form.Label htmlFor="activityLevel">Aktiivisuus</Form.Label>
+                  <Form.Select
+                    value={activityLevel}
+                    onChange={(event) => setActivityLevel(event.target.value)}
+                  >
+                    <option value="sedentary">Ei liikuntaa</option>
+                    <option value="light">Liikuntaa 1-2 kertaa viikossa</option>
+                    <option value="moderate">
+                      Liikuntaa 3-5 kertaa viikossa
+                    </option>
+                    <option value="active">
+                      Liikuntaa 6-7 kertaa viikossa
+                    </option>
+                    <option value="veryActive">
+                      Liikuntaa 8+ kertaa viikossa
+                    </option>
+                  </Form.Select>
+                </Form.Group>
 
-        <select
-          id="activityLevel"
-          value={activityLevel}
-          onChange={(event) => setActivityLevel(event.target.value)}
-        >
-          <option value="sedentary">Ei liikuntaa</option>
-          <option value="light">Liikuntaa 1-2 kertaa viikossa</option>
-          <option value="moderate">Liikuntaa 3-5 kertaa viikossa</option>
-          <option value="active">Liikuntaa 6-7 kertaa viikossa</option>
-          <option value="veryActive">Liikuntaa 8+ kertaa viikossa</option>
-        </select>
-      </div>
+                <Form.Group className="mb-3" controlId="goal">
+                  <Form.Label>Tavoite</Form.Label>
+                  <Form.Select
+                    value={goal}
+                    onChange={(event) => setGoal(event.target.value)}
+                  >
+                    <option value="maintain">Ylläpitää paino</option>
+                    <option value="lose">Pudottaa painoa</option>
+                    <option value="gain">Lisätä painoa</option>
+                  </Form.Select>
+                </Form.Group>
+              </Form>
+            </Card.Body>
+          </Card>
+        </Col>
 
-      <p>Perusaineenvaihdunta: {bmr} kcal </p>
-      <p>Kulutus: {tdee} kcal </p>
-      <p>Kaloritavoite: {macros.calories}, proteiini: {macros.protein}, rasva: {macros.fats}, Hiilihydraatit{macros.carbs}</p>
-    </>
+        <Col md = {6}>
+          <Card>
+            <Card.Body>
+              <Card.Title>Päivittäinen tarve</Card.Title>
+              <ListGroup variant = "flush">
+                <ListGroup.Item className="d-flex-justify-content-between">
+                  <span>Perusaineenvaihdunta: </span>
+                  <strong>{bmr} kcal</strong>
+                </ListGroup.Item>
+                <ListGroup.Item className="d-flex-justify-content-between">
+                  <span>Kulutus: </span>
+                  <strong>{tdee} kcal</strong>
+                </ListGroup.Item>
+                <ListGroup.Item className="d-flex-justify-content-between">
+                  <span>Tavoitekalorit: </span>
+                  <strong>{macros.calories} kcal</strong>
+                </ListGroup.Item>
+                <ListGroup.Item className="d-flex-justify-content-between">
+                  <span>Proteiini: </span>
+                  <strong>{macros.protein}</strong>
+                </ListGroup.Item>
+                <ListGroup.Item className="d-flex-justify-content-between">
+                  <span>Rasva: </span>
+                  <strong>{macros.fats}</strong>
+                </ListGroup.Item>
+                <ListGroup.Item className="d-flex-justify-content-between">
+                  <span>Hiilihydraatit: </span>
+                  <strong>{macros.carbs}</strong>
+                </ListGroup.Item>
+              </ListGroup>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    
   );
 }
 

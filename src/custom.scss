@@ -1,0 +1,16 @@
+$primary: #606a77;  
+$navbar-dark-color: rgba(255, 255, 255, 0.9);   // linkit lähes valkoisiksi
+$navbar-dark-hover-color: #fff;                 // hiiren alla täysin valkoinen
+$navbar-dark-active-color: #fff;                // aktiivinen sivu valkoinen
+
+
+
+@import "bootstrap/scss/bootstrap";
+
+body{
+    background-color: #888888;
+}
+
+.navbar .nav-link.active {
+  border-bottom: 2px solid #fff;   // alleviivaus valitulle sivulle
+}

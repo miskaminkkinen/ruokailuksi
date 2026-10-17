@@ -8,10 +8,10 @@ import SavedRecipes from './pages/SavedRecipes'
 function App() {
   return(
   <>
-  <Navbar bg = "dark" data-bs-theme = "dark">
+  <Navbar bg = "primary" data-bs-theme = "dark">
     <Container>
-      <Navbar.Brand>Ruokailuksi</Navbar.Brand>
-      <Nav>
+      <Navbar.Brand className='fw-bold'>Ruokailuksi</Navbar.Brand>
+      <Nav className='gap-4 ms-auto-gap-4'>
         <Nav.Link as = {NavLink} to = "/" end> Reseptit </Nav.Link>
         <Nav.Link as = {NavLink} to = "/reseptit"> Luo reseptejä </Nav.Link>
         <Nav.Link as = {NavLink} to = "/tiedot"> Omat tiedot </Nav.Link>
