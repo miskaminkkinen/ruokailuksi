@@ -1,157 +1,193 @@
 import { useState } from "react";
-import {searchProduct, fetchProduct} from "../utils/api.js";
+import { searchProduct, fetchProduct } from "../utils/api.js";
 import { calculateRecipeMacros } from "../utils/Calculations.js";
-import { Modal, Button } from "react-bootstrap";
+import {
+  Modal,
+  Button,
+  FormLabel,
+  InputGroup,
+  FormControl,
+} from "react-bootstrap";
 import { saveRecipe, loadRecipe } from "../utils/storage.js";
+import MacroSummary from "../components/MacroSummary.jsx";
+import { Form, Card, Row, Col, ListGroup } from "react-bootstrap";
 
+function Recipes() {
+  const [loading, setLoading] = useState(false);
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState([]);
+  const [error, setError] = useState(null);
+  const [ingredients, setIngredients] = useState([]);
+  const [selected, setSelected] = useState(null);
+  const [grams, setGrams] = useState("100");
+  const [recipeName, setRecipeName] = useState("");
+  const [recipes, setRecipes] = useState(loadRecipe());
 
-
-function Recipes(){
-    const[loading, setLoading] = useState(false);
-    const[query, setQuery] = useState('');
-    const[results, setResults] = useState([]);
-    const[error, setError] = useState(null);
-    const[ingredients, setIngredients] = useState([]);
-    const[selected, setSelected] = useState(null);
-    const[grams, setGrams] = useState("100");
-    const[recipeName, setRecipeName] = useState("");
-    const[recipes, setRecipes] = useState(loadRecipe());
-
-
-    async function handleSearch(code){
+  async function handleSearch(code) {
     setLoading(true);
-    setError(null); 
-    
+    setError(null);
 
     try {
-        const product = await fetchProduct(code.trim());
-        setResults([product]);
-    } catch(error){
-        setError("Tuotetta ei löydy!")
+      const product = await fetchProduct(code.trim());
+      setResults([product]);
+    } catch (error) {
+      setError("Tuotetta ei löydy!");
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-}
+  }
 
-    function handleAdd(){
-        const alreadyAdded = ingredients.some((ingredient) => ingredient.product.barcode === selected.barcode );
+  function handleAdd() {
+    const alreadyAdded = ingredients.some(
+      (ingredient) => ingredient.product.barcode === selected.barcode,
+    );
 
-        if(alreadyAdded){
-          setError("Tuote on jo reseptissä")
-          setSelected(null)
-          return;
-        }
-
-        setIngredients([...ingredients, {product: selected, grams: Number(grams)}]);
-          setSelected(null);
-          setGrams("100")
-          setError(null)
-        
-
-        
-    }
-    function handleRemove(barcode){
-        setIngredients(ingredients.filter((ingredient) => ingredient.product.barcode !== barcode ));
+    if (alreadyAdded) {
+      setError("Tuote on jo reseptissä");
+      setSelected(null);
+      return;
     }
 
-    function handleSaveRecipe() {
-        if(recipeName.trim() === "" || ingredients.length === 0 ){
-            setError("Anna reseptille nimi ja lisää ainakin yksi aines")
-            return;
-        }
+    setIngredients([
+      ...ingredients,
+      { product: selected, grams: Number(grams) },
+    ]);
+    setSelected(null);
+    setGrams("100");
+    setError(null);
+  }
+  function handleRemove(barcode) {
+    setIngredients(
+      ingredients.filter(
+        (ingredient) => ingredient.product.barcode !== barcode,
+      ),
+    );
+  }
 
-        const newRecipe = {
-            id: Date.now(),
-            name: recipeName,
-            ingredients: ingredients,
-            macros: recipeMacros,
-        };
-
-        const updated = [...recipes, newRecipe];
-        setRecipes(updated);
-        saveRecipe(updated);
-
-        setRecipeName("")
-        setIngredients([])
+  function handleSaveRecipe() {
+    if (recipeName.trim() === "" || ingredients.length === 0) {
+      setError("Anna reseptille nimi ja lisää ainakin yksi aines");
+      return;
     }
-   const recipeMacros = calculateRecipeMacros(ingredients);
-    return(
+
+    const newRecipe = {
+      id: Date.now(),
+      name: recipeName,
+      ingredients: ingredients,
+      macros: recipeMacros,
+    };
+
+    const updated = [...recipes, newRecipe];
+    setRecipes(updated);
+    saveRecipe(updated);
+
+    setRecipeName("");
+    setIngredients([]);
+  }
+  const recipeMacros = calculateRecipeMacros(ingredients);
+  return (
     <div>
-        <h1>Reseptit </h1>
-        <label htmlFor = "query">Viivakoodi(löytyy pakkauksesta)</label>
-        <input 
-        id = "query"
-        type = "text"
-        value = {query}
-        onChange={(event) => setQuery(event.target.value)}
+      <h1>Reseptit </h1>
+      <Form.Label htmlFor="query">Viivakoodi(löytyy pakkauksesta)</Form.Label>
+      <InputGroup className="mb-3">
+        <Form.Control
+          inputMode = "numeric"
+          id="query"
+          placeholder="esim. 3017620422003"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
         />
+        <button disabled={loading} onClick={() => handleSearch(query)}>
+          Hae viivakoodilla
+        </button>
+      </InputGroup>
 
-        <button disabled = {loading} onClick={() => handleSearch(query)}>Hae viivakoodilla</button>    
-        {loading && <p>Ladataan...</p>}   
-        {error && <p>{error}</p>}
+      {loading && <p>Ladataan...</p>}
+      {error && <p>{error}</p>}
 
-        <ul>
-            {results.map((product) => (
-                <li key = {product.barcode}>
-                    {product.brand && `${product.brand}: `}{product.name}: {product.kcal} kcal: {product.carbs}Hiilihydaatit / 100g {product.protein}: Proteiini / 100g {product.fats}: Rasva / 100g
-                    <button onClick={() => setSelected(product)}>Lisää Reseptiin</button>
-                </li>
+      <ListGroup classname = "mb-4">
+        {results.map((product) => (
+          <ListGroup.Item 
+          key={product.barcode}
+          className="d-flex justify-content-between align-items-center"
+          >
+            <div>
+            <div classname="fw-semibold">
+                {product.brand && `${product.brand}: `}{product.name}
+            </div>
+            <small classname="text-muted">
+                {product.kcal} kcal | P {product.protein}| H {product.carbs}| R {product.fats} / 100g
+            </small>
+            </div>
+            <button size = "sm" onClick={() => setSelected(product)}>
+              Lisää Reseptiin
+            </button>
+  
+        </ListGroup.Item>
+        ))}
+        </ListGroup>
 
-            ))}
-        </ul>   
 
-        <ul> 
+        <ListGroup classname = "mb-4">
+            {ingredients.length === 0 && <p className="text-muted">Lisää aineksia hakemalla viivakoodilla.</p>}
+        {ingredients.map((ingredient) => (
+          <ListGroup.Item 
+          key={ingredient.product.barcode}
+          className="d-flex justify-content-between align-items-center"
+          >
+            <div classname="fw-semibold">
+                {ingredient.product.brand && `{ingredient.product.brand}: `}{ingredient.product.name}: {ingredient.grams}g
+            </div>
+            <Button
+              variant="outline-danger"
+              size="sm"
+              onClick={() => handleRemove(ingredient.product.barcode)}
+            >
+              Poista
+            </Button>
+  
+        </ListGroup.Item>
+        ))}
+        </ListGroup>
 
-            {ingredients.map((ingredient) =>(
-                <li key = {ingredient.product.barcode}>
-                    {ingredient.product.brand}: {ingredient.product.name}: {ingredient.grams} 
-                    <Button variant = "outline-danger" size = "sm" onClick={() => handleRemove(ingredient.product.barcode)}>Poista</Button>
-                </li>
-            ))}
-            
-        </ul>
 
-        <p>Kalorit: {recipeMacros.calories} kcal</p>
-        <p>Proteiini: {recipeMacros.protein} </p>
-        <p>Hiilihydraatit: {recipeMacros.carbs} </p>
-        <p>Rasva: {recipeMacros.fats}</p>
 
-        <label htmlFor="recipeName">Reseptin nimi</label>
-        <input 
-        id = "recipeName"
-        type = "text"
-        value = {recipeName}
+
+
+      <MacroSummary macros={recipeMacros} />
+
+      <label htmlFor="recipeName">Reseptin nimi</label>
+      <input
+        id="recipeName"
+        type="text"
+        value={recipeName}
         onChange={(event) => setRecipeName(event.target.value)}
-        />
+      />
 
-        <Button onClick={handleSaveRecipe}>Tallenna</Button>
+      <Button onClick={handleSaveRecipe}>Tallenna</Button>
 
-
-
-
-    <Modal show={selected !== null} onHide={() => setSelected(null)}>
+      <Modal show={selected !== null} onHide={() => setSelected(null)}>
         <Modal.Header closeButton>
-            <Modal.Title>{selected?.name}</Modal.Title>
+          <Modal.Title>{selected?.name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <label htmlFor="grams">Grammaa (g)</label>
-            <input
+          <label htmlFor="grams">Grammaa (g)</label>
+          <input
             type="number"
             id="grams"
             value={grams}
             onChange={(event) => setGrams(event.target.value)}
-            />
+          />
         </Modal.Body>
         <Modal.Footer>
-            <Button variant = "secondary" onClick={() => setSelected(null)}>Peruuta</Button>
-            <Button onClick = {handleAdd}>Lisää Reseptiin</Button>
+          <Button variant="secondary" onClick={() => setSelected(null)}>
+            Peruuta
+          </Button>
+          <Button onClick={handleAdd}>Lisää Reseptiin</Button>
         </Modal.Footer>
-    </Modal>
-
+      </Modal>
     </div>
-    );
-
+  );
 }
 
-export default Recipes
-
+export default Recipes;
