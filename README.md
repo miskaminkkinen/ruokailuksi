@@ -2,7 +2,7 @@ Ruokailuksi
 
 Ruokailuksi on ravinnosta kiinnostuneille ja arjen helpottamiseen tehty React-sovellus, joka laskee käyttäjän päivittäisen energiantarpeen ja makrotavoitteet. Käyttäjä voi koota reseptejä hakemalla tuotteita viivakoodilla, ja sovellus laskee reseptin ravintoarvot.
 
-Julkaistu sovellus: https://[käyttäjänimi].github.io/ruokailuksi/
+Julkaistu sovellus: https://miskaminkkinen.github.io/ruokailuksi/
 
 Ominaisuudet
 Omat tiedot: perusaineenvaihdunta, kokonaiskulutus sekä kalori-, proteiini-, hiilihydraatti- ja rasvatavoitteet painon, pituuden, iän, sukupuolen, aktiivisuuden ja tavoitteen perusteella.
